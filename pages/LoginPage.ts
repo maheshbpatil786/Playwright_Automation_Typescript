@@ -1,6 +1,6 @@
 // pages/LoginPage.ts
 
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, test } from '@playwright/test';
 import { BasePage } from './BasePage';
 
 export class LoginPage extends BasePage {
@@ -18,12 +18,26 @@ export class LoginPage extends BasePage {
     }
 
     async navigateToLoginPage() {
-        await this.page.goto('/');
+
+        await test.step('Navigate to Login Page', async () => {
+            await this.page.goto('/');
+        });
+
     }
 
     async login(user: string, pass: string) {
-        await this.fill(this.username, user);
-        await this.fill(this.password, pass);
-        await this.click(this.loginBtn);
+
+        await test.step('Enter Username', async () => {
+            await this.fill(this.username, user);
+        });
+
+        await test.step('Enter Password', async () => {
+            await this.fill(this.password, pass);
+        });
+
+        await test.step('Click Login Button', async () => {
+            await this.click(this.loginBtn);
+        });
+
     }
 }

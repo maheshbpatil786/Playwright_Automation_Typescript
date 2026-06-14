@@ -5,7 +5,7 @@ import './hooks/testHooks';
 import { test, expect } from '../fixtures/customFixture';
 import { ENV } from '../utils/Environment';
 
-test('verify products page title', async ({
+test('@regression verify products page', async ({
     loginPage,
     productsPage
 }) => {

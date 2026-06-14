@@ -7,8 +7,7 @@ import {
     expect
 } from '../fixtures/authenticatedFixture';
 
-test(
-    'verify inventory page',
+test('@smoke verify inventory page', 
     async ({ authenticatedPage }) => {
 
         const title =

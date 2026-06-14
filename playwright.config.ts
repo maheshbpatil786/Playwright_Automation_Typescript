@@ -1,26 +1,63 @@
-import { defineConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 
 const env = process.env.TEST_ENV || 'qa';
 
 dotenv.config({
-  path: `config/${env}.env`
+    path: `config/${env}.env`,
+    override: true
 });
 
 export default defineConfig({
+    fullyParallel: true,
 
-  testDir: './tests',
+    workers: 3,
+    testDir: './tests',
+    reporter: [
+        ['html'],
+        ['allure-playwright']
+    ],
 
-  use: {
+    use: {
+        baseURL: process.env.BASE_URL,
+        headless: false,
+        screenshot: 'only-on-failure',
+        trace: 'on-first-retry'
+    },
 
-    baseURL: process.env.BASE_URL,
+    projects: [
 
-    headless: false,
+        {
+            name: 'setup',
+            testMatch: /.*auth\.setup\.ts/
+        },
 
-    screenshot: 'only-on-failure',
+        {
+            name: 'chromium',
+            dependencies: ['setup'],
+            use: {
+                ...devices['Desktop Chrome'],
+                storageState: '.auth/user.json'
+            }
+        },
 
-    trace: 'on-first-retry'
-  },
+        {
+            name: 'firefox',
+            dependencies: ['setup'],
+            use: {
+                ...devices['Desktop Firefox'],
+                storageState: '.auth/user.json'
+            }
+        },
 
+        {
+            name: 'webkit',
+            dependencies: ['setup'],
+            use: {
+                ...devices['Desktop Safari'],
+                storageState: '.auth/user.json'
+            }
+        }
 
+    ]
 });
