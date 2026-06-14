@@ -1,21 +1,29 @@
-import { Page } from '@playwright/test';
+// pages/LoginPage.ts
 
-export class LoginPage {
+import { Page, Locator } from '@playwright/test';
+import { BasePage } from './BasePage';
 
-    constructor(private page: Page) {}
+export class LoginPage extends BasePage {
 
-    username = '#user-name';
-    password = '#password';
-    loginBtn = '#login-button';
+    private username: Locator;
+    private password: Locator;
+    private loginBtn: Locator;
+
+    constructor(page: Page) {
+        super(page);
+
+        this.username = page.locator('#user-name');
+        this.password = page.locator('#password');
+        this.loginBtn = page.locator('#login-button');
+    }
 
     async navigateToLoginPage() {
-        await this.page.goto('https://www.saucedemo.com/');
+        await this.page.goto('/');
     }
 
     async login(user: string, pass: string) {
-        await this.page.fill(this.username, user);
-        await this.page.fill(this.password, pass);
-        await this.page.fill(this.password, pass);
-        await this.page.click(this.loginBtn);
+        await this.fill(this.username, user);
+        await this.fill(this.password, pass);
+        await this.click(this.loginBtn);
     }
 }

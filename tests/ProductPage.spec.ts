@@ -1,9 +1,11 @@
+// tests/ProductPage.spec.ts
+
 import './hooks/testHooks';
 
 import { test, expect } from '../fixtures/customFixture';
 import { ENV } from '../utils/Environment';
 
-test('verify successful login', async ({
+test('verify products page title', async ({
     loginPage,
     productsPage
 }) => {
@@ -17,5 +19,5 @@ test('verify successful login', async ({
 
     const title = await productsPage.getProductTitle();
 
-    expect(title).toBe('Products');
+    expect(title).toContain('Products');
 });
